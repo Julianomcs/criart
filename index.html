@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CriArt | Uniformes Profissionais de Alta Performance</title>
+    <link rel="icon" type="image/png" href="imagens/favicon.png">
+    
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-brand-dark: #1A1A1A;
+            --color-brand-neutral: #4A4A4A;
+            --color-brand-accent: #FF6600;
+            --font-heading: 'Archivo Black', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-brand-dark);
+            color: #FFFFFF;
+            font-family: var(--font-body);
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+        }
+
+        /* Sistema de Órbitas Scrollytelling (Refatorado para Cores Industriais) */
+        .orb {
+            filter: blur(80px);
+            transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1), background 2s ease, opacity 2s ease;
+            mix-blend-mode: screen;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Botão estático cabeçalho */
+        .button-static {
+            background-color: #ff6200;
+            color: #FFFFFF;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            padding: 0.35rem 0.7rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .button-static {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.875rem;
+            }
+        }
+        .button-static:hover {
+            opacity: 0.9;
+        }
+
+        /* Botão Animado Uiverse - Laranja #ff6200 (SEM SVG) */
+        .button {
+          --black-700: hsla(0 0% 12% / 1);
+          --border_radius: 9999px;
+          --transtion: 0.3s ease-in-out;
+          --offset: 2px;
+
+          cursor: pointer;
+          position: relative;
+
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+
+          transform-origin: center;
+
+          padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+          max-width: 100%;
+          background-color: transparent;
+
+          border: none;
+          border-radius: var(--border_radius);
+          transform: scale(calc(1 + (var(--active, 0) * 0.1)));
+
+          transition: transform var(--transtion);
+          text-decoration: none;
+        }
+
+        .button::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          width: 100%;
+          height: 100%;
+          background-color: var(--black-700);
+
+          border-radius: var(--border_radius);
+          box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+            0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
+            0 0 0 calc(var(--active, 0) * 0.375rem) rgba(255, 98, 0, 0.75);
+
+          transition: all var(--transtion);
+          z-index: 0;
+        }
+
+        .button::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 98, 0, 0.75);
+          background-image: radial-gradient(
+              at 51% 89%,
+              #ff8533 0px,
+              transparent 50%
+            ),
+            radial-gradient(at 100% 100%, #e65800 0px, transparent 50%),
+            radial-gradient(at 22% 91%, #e65800 0px, transparent 50%);
+          background-position: top;
+
+          opacity: var(--active, 0);
+          border-radius: var(--border_radius);
+          transition: opacity var(--transtion);
+          z-index: 2;
+        }
+
+        .button:is(:hover, :focus-visible) {
+          --active: 1;
+        }
+        .button:active {
+          transform: scale(1);
+        }
+
+        .button .dots_border {
+          --size_border: calc(100% + 2px);
+
+          overflow: hidden;
+
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          width: var(--size_border);
+          height: var(--size_border);
+          background-color: transparent;
+
+          border-radius: var(--border_radius);
+          z-index: -10;
+        }
+
+        .button .dots_border::before {
+          content: "";
+          position: absolute;
+          top: 30%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          transform-origin: left;
+          transform: rotate(0deg);
+
+          width: 100%;
+          height: 2rem;
+          background-color: white;
+
+          mask: linear-gradient(transparent 0%, white 120%);
+          -webkit-mask: linear-gradient(transparent 0%, white 120%);
+          animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        .button .text_button {
+          position: relative;
+          z-index: 10;
+
+          background-image: linear-gradient(
+            90deg,
+            hsla(0 0% 100% / 1) 0%,
+            hsla(0 0% 100% / var(--active, 0)) 120%
+          );
+          background-clip: text;
+          -webkit-background-clip: text;
+
+          font-size: clamp(0.55rem, 3vw, 1rem);
+          white-space: normal;
+          word-break: break-word;
+          text-align: center;
+          letter-spacing: -0.02em;
+          color: transparent;
+          font-family: var(--font-heading);
+          text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen overflow-x-hidden selection:bg-brand-accent selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div id="orb-1" class="orb absolute w-[60vh] h-[60vh] top-[20%] left-[20%] rounded-full bg-brand-accent opacity-20"></div>
+        <div id="orb-2" class="orb absolute w-[50vh] h-[50vh] top-[30%] right-[20%] rounded-full bg-[#FFCC00] opacity-10"></div>
+        <div id="orb-3" class="orb absolute w-[40vh] h-[40vh] bottom-[10%] left-[40%] rounded-full bg-brand-neutral opacity-0"></div>
+    </div>
+
+    <!-- CABEÇALHO -->
+    <header class="fixed w-full top-0 z-50 backdrop-blur-md bg-brand-dark/80 border-b border-white/10 px-6 py-4 flex justify-between items-center">
+        <img src="imagens/logo-criart.webp" alt="Logo CriArt" width="150" height="50" class="h-10 w-auto">
+        <nav class="hidden md:flex gap-6 text-sm font-medium text-gray-300 absolute left-1/2 -translate-x-1/2">
+            <a href="#solucao" class="hover:text-brand-accent transition-colors">Solução</a>
+            <a href="#produtos" class="hover:text-brand-accent transition-colors">Produtos</a>
+            <a href="#diagnostico" class="hover:text-brand-accent transition-colors">Diagnóstico</a>
+            <a href="#quem-somos" class="hover:text-brand-accent transition-colors">Quem Somos</a>
+        </nav>
+        <!-- BOTÃO ESTÁTICO (Sem Animação/Sem Efeito Uiverse) -->
+        <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="inline-flex button-static text-[10px] md:text-xs py-1.5 px-3 md:px-4 tracking-wide whitespace-nowrap">
+            SOLICITAR ORÇAMENTO
+        </a>
+    </header>
+
+    <main id="retune-root" class="relative z-10 pt-24 pb-32 flex flex-col gap-32">
+
+        <!-- SEÇÃO 1 — Hero -->
+        <section id="hero" class="min-h-[80vh] flex flex-col lg:flex-row items-center px-6 md:px-[10vw] gap-12">
+            <div class="flex-1">
+                <h1 class="fade-in text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.1] mb-6">
+                    Uniformes profissionais para empresas que precisam comprar com prazo, padronização e segurança operacional
+                </h1>
+                <p class="fade-in text-gray-400 text-lg md:text-xl max-w-2xl mb-8" style="transition-delay: 0.2s">
+                    Solicite seu orçamento de uniformes EPI e administrativos com atendimento direto para empresas, produção sob demanda e condições comerciais para pedidos corporativos.
+                </p>
+                <div class="fade-in" style="transition-delay: 0.3s">
+                    <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="button">
+                        <div class="dots_border"></div>
+                        <span class="text_button">SOLICITAR MEU ORÇAMENTO AGORA</span>
+                    </a>
+                </div>
+            </div>
+            <div class="flex-1 fade-in w-full" style="transition-delay: 0.4s">
+                <div id="hero-img-wrapper" class="w-full relative overflow-hidden rounded-xl border border-white/10 shadow-2xl" style="-webkit-mask: linear-gradient(180deg, #000 30%, transparent 85%); mask: linear-gradient(180deg, #000 30%, transparent 85%);">
+                    <img id="hero-img" src="imagens/01-hero-fardamento.webp" alt="Fardamento Profissional CriArt" fetchpriority="high" width="800" height="600" class="w-full" style="display:block; transform: translateY(22%) scale(1.3); transform-origin: center bottom; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease; will-change: transform; filter: drop-shadow(0 0 0px transparent);">
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2 — Chamada de Ação | Decisão Rápida -->
+        <section id="solucao" class="px-6 md:px-[10vw] text-center max-w-4xl mx-auto">
+            <h2 class="fade-in text-[clamp(2rem,4vw,3rem)] leading-tight mb-6">Precisa comprar uniformes para sua empresa?</h2>
+            <p class="fade-in text-gray-400 text-lg mb-4">Peça agora seu orçamento de uniformes profissionais com atendimento consultivo e produção voltada para demandas corporativas.</p>
+            <p class="fade-in text-gray-300 font-semibold text-xl mb-4">Operação organizada começa com fornecedor certo.</p>
+            <p class="fade-in text-gray-400 mb-8">Fale com a equipe e receba a melhor proposta para a necessidade da sua empresa.</p>
+            <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="fade-in button">
+                <div class="dots_border"></div>
+                <span class="text_button">QUERO VER VALOR E PRAZO DE ENTREGA</span>
+            </a>
+        </section>
+
+        <!-- SEÇÃO 3 — Benefícios -->
+        <section id="beneficios" class="px-6 md:px-[10vw] flex flex-col md:flex-row items-center gap-16">
+            <div class="flex-1 order-2 md:order-1 fade-in overflow-hidden rounded-xl border border-white/10" style="max-height: 560px;">
+                <img src="imagens/03-producao-escala.webp" alt="Produção de Uniformes em Escala" loading="lazy" width="800" height="600" class="w-full" style="display:block; transform: translateY(20%) scale(1.28); transform-origin: center bottom;">
+            </div>
+            <div class="flex-1 order-1 md:order-2">
+                <h2 class="fade-in text-3xl md:text-4xl leading-tight mb-6">Sua empresa com uniformes profissionais, sem atraso, despadronização e retrabalho</h2>
+                <div class="fade-in space-y-4 text-gray-400 text-lg mb-8">
+                    <p>Você não precisa lidar com fornecedor que falha no prazo, muda o padrão entre lotes ou transforma a reposição em um novo problema interno.</p>
+                    <p>Atendemos empresas que precisam comprar com mais previsibilidade, mais consistência visual e mais segurança em cada novo pedido.</p>
+                    <p>Você fala com a equipe, recebe o orçamento e já sai com a compra encaminhada de forma mais clara e profissional.</p>
+                </div>
+                <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="fade-in button">
+                    <div class="dots_border"></div>
+                    <span class="text_button">PEDIR ORÇAMENTO</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4 — O Que Está Incluso | Entrega Completa -->
+        <section id="incluso" class="px-6 md:px-[10vw] flex flex-col md:flex-row items-center gap-16">
+            <div class="flex-1">
+                <h2 class="fade-in text-3xl md:text-4xl leading-tight mb-6">O que sua empresa recebe ao solicitar uniformes com a CriArt</h2>
+                <ul class="fade-in space-y-4 mb-8">
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Atendimento para demandas corporativas</li>
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Orçamento conforme quantidade e tipo de peça</li>
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Suporte na definição do modelo e material</li>
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Personalização com identidade da empresa</li>
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Produção de uniformes EPI e administrativos</li>
+                    <li class="flex items-center gap-3 text-gray-300"><span class="text-brand-accent">✓</span> Condições para pedidos recorrentes e reposição</li>
+                </ul>
+                <p class="fade-in text-gray-400 italic mb-8">Tudo pensado para sua empresa comprar com mais organização, mais padrão e menos desgaste no processo.</p>
+                <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="fade-in button">
+                    <div class="dots_border"></div>
+                    <span class="text_button">QUERO SOLICITAR MEU ORÇAMENTO AGORA</span>
+                </a>
+            </div>
+            <div class="flex-1 fade-in">
+                <img src="imagens/04-detalhe-tecido.webp" alt="Detalhes e Acabamento do Tecido" loading="lazy" width="800" height="600" class="w-full h-auto rounded-xl border border-white/10">
+            </div>
+        </section>
+
+        <!-- SEÇÃO 5 — Sessão de Produtos | Escolha Sua Opção -->
+        <section id="produtos" class="px-6 md:px-[10vw]">
+            <div class="text-center mb-16">
+                <h2 class="fade-in text-3xl md:text-5xl leading-tight mb-4">Escolha a solução ideal para a necessidade da sua empresa</h2>
+                <p class="fade-in text-gray-400 text-lg">Veja a linha mais adequada para sua operação e fale com a equipe para receber seu orçamento no WhatsApp.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Uniformes Administrativos -->
+                <div class="fade-in bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm flex flex-col">
+                    <h3 class="text-2xl text-brand-accent mb-6">Uniformes Administrativos</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="w-full aspect-[3/4] rounded-lg bg-white/5 overflow-hidden" style="-webkit-mask: linear-gradient(180deg, #000 50%, transparent 100%); mask: linear-gradient(180deg, #000 50%, transparent 100%);">
+                            <img src="imagens/05-admin-recepcao.webp" alt="Uniformes para Recepção" loading="lazy" width="400" height="600" class="w-full h-full object-cover" style="object-position: center 35%; transform: translateY(18%) scale(1.2); transform-origin: center bottom;">
+                        </div>
+                        <div class="w-full aspect-[3/4] rounded-lg bg-white/5 overflow-hidden" style="-webkit-mask: linear-gradient(180deg, #000 50%, transparent 100%); mask: linear-gradient(180deg, #000 50%, transparent 100%);">
+                            <img src="imagens/06-admin-escritorio.webp" alt="Uniformes para Escritório" loading="lazy" width="400" height="600" class="w-full h-full object-cover" style="object-position: center 35%; transform: translateY(15%) scale(1.15); transform-origin: center bottom;">
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">Ideal para empresas que precisam reforçar apresentação, identidade visual e padronização da equipe em ambientes corporativos, comerciais e de atendimento.</p>
+                    <div class="mb-6 flex-grow">
+                        <span class="block font-semibold mb-2">Indicado para:</span>
+                        <ul class="text-sm text-gray-400 grid grid-cols-2 gap-2">
+                            <li>• recepção</li><li>• administrativo</li><li>• vendas</li>
+                            <li>• atendimento</li><li>• franquias</li><li>• equipes internas</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm text-gray-400 italic mb-8">Boa opção para empresas que desejam fortalecer a imagem da marca com mais organização e consistência visual.</p>
+                    <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="button w-full justify-center">
+                        <div class="dots_border"></div>
+                        <span class="text_button !text-[10px] md:!text-xs xl:!text-sm tracking-tighter">QUERO ORÇAMENTO DE UNIFORME ADMINISTRATIVO</span>
+                    </a>
+                </div>
+
+                <!-- Uniformes EPI -->
+                <div class="fade-in bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm flex flex-col">
+                    <h3 class="text-2xl text-brand-accent mb-6">Uniformes EPI e Operacionais</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="w-full aspect-[3/4] rounded-lg bg-white/5 overflow-hidden" style="-webkit-mask: linear-gradient(180deg, #000 50%, transparent 100%); mask: linear-gradient(180deg, #000 50%, transparent 100%);">
+                            <img src="imagens/07-epi-industria.webp" alt="Uniformes EPI para Indústria" loading="lazy" width="400" height="600" class="w-full h-full object-cover object-top">
+                        </div>
+                        <div class="w-full aspect-[3/4] rounded-lg bg-white/5 overflow-hidden" style="-webkit-mask: linear-gradient(180deg, #000 50%, transparent 100%); mask: linear-gradient(180deg, #000 50%, transparent 100%);">
+                            <img src="imagens/07-epi-obra.webp" alt="Uniformes EPI para Obras" loading="lazy" width="400" height="600" class="w-full h-full object-cover object-top">
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">Ideal para empresas que precisam de uniformes com mais resistência, padronização e adequação para operações de campo, indústria, manutenção, obras e atividades técnicas.</p>
+                    <div class="mb-6 flex-grow">
+                        <span class="block font-semibold mb-2">Indicado para:</span>
+                        <ul class="text-sm text-gray-400 grid grid-cols-2 gap-2">
+                            <li>• indústria</li><li>• construção civil</li><li>• manutenção</li>
+                            <li>• logística</li><li>• facilities</li><li>• operações externas</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm text-gray-400 italic mb-8">Boa opção para empresas que precisam comprar com mais durabilidade, conformidade e previsibilidade de reposição.</p>
+                    <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="button w-full justify-center">
+                        <div class="dots_border"></div>
+                        <span class="text_button !text-[10px] md:!text-xs xl:!text-sm tracking-tighter">QUERO ORÇAMENTO DE UNIFORME EPI</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 6 — Diagnóstico Rápido | Descubra a Melhor Solução -->
+        <section id="diagnostico" class="px-6 md:px-[10vw]">
+            <div class="max-w-4xl mx-auto text-center fade-in">
+                <h2 class="text-3xl md:text-4xl leading-tight mb-4">Não sabe qual tipo de uniforme solicitar? A gente facilita para sua empresa.</h2>
+                <p class="text-gray-400 mb-12">Referência rápida para definir sua demanda. Antes do orçamento, considere:</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                <div class="fade-in space-y-6">
+                    <div class="border-b border-white/10 pb-4">
+                        <h4 class="font-heading text-brand-accent">Tipo de equipe</h4>
+                        <p class="text-gray-300 text-sm">Administrativa, operacional ou mista</p>
+                    </div>
+                    <div class="border-b border-white/10 pb-4">
+                        <h4 class="font-heading text-brand-accent">Quantidade de colaboradores</h4>
+                        <p class="text-gray-300 text-sm">Número de pessoas que receberão uniforme no pedido atual</p>
+                    </div>
+                    <div class="border-b border-white/10 pb-4">
+                        <h4 class="font-heading text-brand-accent">Tipo de uso</h4>
+                        <p class="text-gray-300 text-sm">Uso leve, uso diário interno ou uso intenso em campo</p>
+                    </div>
+                    <div class="border-b border-white/10 pb-4">
+                        <h4 class="font-heading text-brand-accent">Frequência de reposição</h4>
+                        <p class="text-gray-300 text-sm">Compra pontual, recorrente ou necessidade de padronização contínua</p>
+                    </div>
+                </div>
+                <div class="fade-in bg-[#111] border border-white/10 p-8 rounded-xl">
+                    <h4 class="font-heading text-xl mb-6">Exemplos práticos</h4>
+                    <ul class="space-y-6">
+                        <li><strong class="block text-brand-accent">Empresas com equipe administrativa</strong><span class="text-sm text-gray-400">Precisam reforçar apresentação, identidade visual e padronização de marca</span></li>
+                        <li><strong class="block text-brand-accent">Empresas com equipe operacional</strong><span class="text-sm text-gray-400">Precisam de mais resistência, conformidade e constância entre lotes</span></li>
+                        <li><strong class="block text-brand-accent">Empresas com operação mista</strong><span class="text-sm text-gray-400">Precisam unificar imagem, processo de compra e reposição entre setores diferentes</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-12 fade-in">
+                <p class="text-lg text-gray-300 mb-8">Você informa sua necessidade e a equipe ajuda a indicar a solução mais adequada para o seu cenário.</p>
+                <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="button">
+                    <div class="dots_border"></div>
+                    <span class="text_button">QUERO AJUDA PARA DEFINIR O MELHOR UNIFORME</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 7 — Para Quais Empresas | Aplicação da Solução -->
+        <section id="empresas" class="px-6 md:px-[10vw] text-center max-w-4xl mx-auto">
+            <h2 class="fade-in text-3xl md:text-4xl leading-tight mb-6">Ideal para empresas que compram uniforme com recorrência e exigem mais controle no processo</h2>
+            <p class="fade-in text-gray-400 text-lg mb-12">A CriArt atende empresas em que prazo, padronização, apresentação e durabilidade fazem diferença no dia a dia da operação.</p>
+            
+            <div class="fade-in flex flex-wrap justify-center gap-3 mb-12">
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">indústrias</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">construtoras</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">empresas de manutenção</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">operações de campo</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">empresas de facilities</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">redes e franquias</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm">equipes administrativas</span>
+                <span class="px-4 py-2 bg-white/5 border border-brand-neutral/30 rounded-full text-sm border-brand-accent/50 text-brand-accent">empresas com demanda recorrente de reposição</span>
+            </div>
+
+            <p class="fade-in text-gray-300 italic mb-8">Se sua empresa precisa comprar uniforme com mais segurança e menos improviso, essa solução foi feita para o seu tipo de demanda.</p>
+            <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="fade-in button">
+                <div class="dots_border"></div>
+                <span class="text_button">QUERO SOLICITAR MEU ORÇAMENTO AGORA</span>
+            </a>
+        </section>
+
+        <!-- SEÇÃO 8 — Quem Somos -->
+        <section id="quem-somos" class="px-6 md:px-[10vw] max-w-4xl mx-auto text-center">
+            <h2 class="fade-in font-heading text-brand-accent text-2xl mb-8">Quem somos?</h2>
+            <div class="fade-in space-y-6 text-gray-300 text-lg md:text-xl leading-relaxed mb-12">
+                <p>A CriArt é especializada em uniformes profissionais para empresas que precisam comprar com mais padrão, mais durabilidade e mais previsibilidade no processo.</p>
+                <p>A empresa atende demandas de uniformes EPI, operacionais e administrativos com foco em qualidade, personalização, atendimento e estrutura para pedidos corporativos.</p>
+                <p>Mais do que fornecer peças, a CriArt entrega uma solução pensada para empresas que precisam organizar sua compra, reduzir falhas e manter a identidade visual da equipe com mais consistência.</p>
+            </div>
+            <a href="https://wa.me/5598999766996?text=Ol%C3%A1%2C%20tudo%20bem%3F%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento" class="fade-in button">
+                <div class="dots_border"></div>
+                <span class="text_button">FALAR COM A EQUIPE AGORA</span>
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-white/10 py-12 px-6 text-center flex flex-col items-center">
+        <img src="imagens/logo-criart.webp" alt="Logo CriArt" loading="lazy" width="150" height="50" class="h-10 w-auto mb-6 opacity-80 grayscale hover:grayscale-0 transition-all">
+        <p class="text-sm text-gray-500">© 2026 CriArt. Todos os direitos reservados.</p>
+    </footer>
+
+    <div id="timeline" class="fixed bottom-0 left-0 w-full h-2 flex z-50 pointer-events-none"></div>
+
+    <script>
+        /* ── Hero Image Repulsion Effect ── */
+        (function () {
+            const img = document.getElementById('hero-img');
+            const wrapper = document.getElementById('hero-img-wrapper');
+            if (!img || !wrapper) return;
+
+            // Base transform values
+            const BASE_TRANSLATE_Y = 22;   // %
+            const BASE_SCALE       = 1.3;
+
+            // Max repulsion distances (px)
+            const MAX_SHIFT   = 28;
+            const MAX_ROTATE  = 5;         // deg
+            const GLOW_COLOR  = '255, 98, 0'; // brand accent RGB
+
+            let currentX = 0, currentY = 0;
+            let targetX  = 0, targetY  = 0;
+            let raf;
+
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function animate() {
+                currentX = lerp(currentX, targetX, 0.08);
+                currentY = lerp(currentY, targetY, 0.08);
+
+                const rotate   = (currentX / MAX_SHIFT) * MAX_ROTATE;
+                const glowAmt  = Math.sqrt(currentX * currentX + currentY * currentY) / MAX_SHIFT;
+                const glowPx   = Math.round(glowAmt * 18);
+
+                img.style.transform =
+                    `translateY(${BASE_TRANSLATE_Y}%) scale(${BASE_SCALE}) ` +
+                    `translate(${currentX}px, ${currentY}px) ` +
+                    `rotateZ(${rotate}deg)`;
+
+                img.style.filter =
+                    glowPx > 1
+                        ? `drop-shadow(${-currentX * 0.3}px ${-currentY * 0.3}px ${glowPx}px rgba(${GLOW_COLOR}, ${glowAmt * 0.55}))`
+                        : 'drop-shadow(0 0 0px transparent)';
+
+                if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+                    raf = requestAnimationFrame(animate);
+                } else {
+                    raf = null;
+                }
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                const rect    = wrapper.getBoundingClientRect();
+                const cx      = rect.left + rect.width  / 2;
+                const cy      = rect.top  + rect.height / 2;
+                const dx      = e.clientX - cx;
+                const dy      = e.clientY - cy;
+                const maxDist = Math.max(rect.width, rect.height) * 0.9;
+                const dist    = Math.sqrt(dx * dx + dy * dy);
+
+                // Influence fades based on proximity; strongest when mouse is near the image
+                const proximity = Math.max(0, 1 - dist / maxDist);
+                const strength  = proximity * proximity; // quadratic — feels more natural
+
+                // Repulse: image moves AWAY from cursor
+                targetX = -(dx / maxDist) * MAX_SHIFT * strength * 3;
+                targetY = -(dy / maxDist) * MAX_SHIFT * strength * 3;
+
+                if (!raf) raf = requestAnimationFrame(animate);
+            });
+
+            document.addEventListener('mouseleave', () => {
+                targetX = 0;
+                targetY = 0;
+                if (!raf) raf = requestAnimationFrame(animate);
+            });
+        })();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const root = document.getElementById('retune-root');
+            const sections = root.querySelectorAll('section');
+            const timeline = document.getElementById('timeline');
+            const orbs = {
+                1: document.getElementById('orb-1'),
+                2: document.getElementById('orb-2'),
+                3: document.getElementById('orb-3')
+            };
+
+            // Timeline Builder
+            for (let i = 0; i < sections.length * 5; i++) {
+                const tick = document.createElement('div');
+                tick.className = 'flex-1 h-full bg-white/20 transition-all duration-300';
+                timeline.appendChild(tick);
+            }
+            const ticks = timeline.querySelectorAll('div');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        const index = Array.from(sections).indexOf(entry.target);
+                        
+                        // Fades
+                        entry.target.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+
+                        // Orb Animations
+                        if (index % 2 === 0) {
+                            orbs[1].style.transform = 'translate(-10%, 20%) scale(0.9)'; 
+                            orbs[2].style.transform = 'translate(-20%, -10%) scale(1.1)'; 
+                            orbs[3].style.opacity = '0';
+                        } else {
+                            orbs[1].style.transform = 'translate(20%, -10%) scale(1.2)'; 
+                            orbs[2].style.transform = 'translate(-10%, 10%) scale(0.8)'; 
+                            orbs[3].style.transform = 'translate(0, 0) scale(1)';
+                            orbs[3].style.opacity = '0.3';
+                        }
+
+                        // Update Timeline
+                        const ticksPerSection = Math.floor(ticks.length / sections.length);
+                        const start = index * ticksPerSection;
+                        ticks.forEach((t, i) => {
+                            if (i >= start && i < start + ticksPerSection) {
+                                t.style.backgroundColor = '#FF6600';
+                            } else {
+                                t.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            sections.forEach(s => observer.observe(s));
+        });
+    </script>
+</body>
+</html>
