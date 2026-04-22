@@ -1,0 +1,62 @@
+# ── Compressão Brotli (preferencial) e GZIP (fallback) ──
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/javascript application/javascript text/plain application/json
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript text/plain application/json
+</IfModule>
+
+# ── Cache de longa duração para assets estáticos ──
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Imagens — 1 ano
+    ExpiresByType image/webp        "access plus 1 year"
+    ExpiresByType image/png         "access plus 1 year"
+    ExpiresByType image/jpeg        "access plus 1 year"
+    ExpiresByType image/svg+xml     "access plus 1 year"
+    ExpiresByType image/x-icon      "access plus 1 year"
+
+    # Fontes — 1 ano
+    ExpiresByType font/woff2        "access plus 1 year"
+    ExpiresByType font/woff         "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+
+    # CSS e JS — 1 mês
+    ExpiresByType text/css          "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript   "access plus 1 month"
+
+    # HTML — sem cache (sempre atualizado)
+    ExpiresByType text/html         "access plus 0 seconds"
+</IfModule>
+
+# ── Headers de cache explícitos ──
+<IfModule mod_headers.c>
+    # Imagens e fontes: cache imutável de 1 ano
+    <FilesMatch "\.(webp|png|jpg|jpeg|svg|ico|woff2|woff)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # CSS e JS: cache de 1 mês
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+    # HTML: sem cache
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # Segurança básica
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# ── Keep-Alive para reduzir overhead de conexão ──
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
