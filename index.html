@@ -870,6 +870,14 @@
 })();
 </script>
 <!-- Modal Kommo -->
+<style>
+  #amoforms_iframe_1716376, .amoforms_iframe {
+    width: 100% !important;
+    min-height: 480px !important;
+    border: none !important;
+    display: block !important;
+  }
+</style>
 <div id="kommo-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.7);overflow-y:auto;">
   <div style="position:relative;margin:5vh auto 2rem;max-width:560px;background:#fff;border-radius:12px;padding:2rem 1.5rem 1.5rem;min-height:200px;">
     <button id="kommo-close" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;">&times;</button>
@@ -882,21 +890,29 @@
 
 <script>
 (function () {
+  function hideLoading() {
+    var el = document.getElementById('kommo-loading');
+    if (el) el.style.display = 'none';
+  }
+
   function openModal() {
     document.getElementById('kommo-modal').style.display = 'block';
     document.body.style.overflow = 'hidden';
+    // Verifica imediatamente se o iframe já existe
+    if (document.getElementById('amoforms_iframe_1716376')) {
+      hideLoading();
+    }
   }
+
   function closeModal() {
     document.getElementById('kommo-modal').style.display = 'none';
     document.body.style.overflow = '';
   }
 
-  // Esconde o "Carregando..." assim que o iframe do Kommo aparecer no DOM
+  // Observa quando o Kommo inserir o iframe (caso ainda não tenha carregado)
   var observer = new MutationObserver(function () {
-    var iframe = document.getElementById('amoforms_iframe_1716376');
-    if (iframe) {
-      var loading = document.getElementById('kommo-loading');
-      if (loading) loading.style.display = 'none';
+    if (document.getElementById('amoforms_iframe_1716376')) {
+      hideLoading();
       observer.disconnect();
     }
   });
