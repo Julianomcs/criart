@@ -480,6 +480,10 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "x7h3zlx0bc");
     </script>
+  <!-- Kommo Form — botão flutuante oculto, acionado pelos CTAs -->
+  <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1716376",hash:"6e1fa9fc40b1434fe02b0739d75fe14b",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
+  <script id="amoforms_script_1716376" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1782484079"></script>
+  <style>#amoforms_action_btn { position:fixed !important; top:-9999px !important; left:-9999px !important; }</style>
 </head>
 <body>
 
@@ -869,52 +873,23 @@
   }, true);
 })();
 </script>
-<!-- Modal Kommo -->
-<div id="kommo-overlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.65);overflow-y:auto;">
-  <div id="kommo-box" style="position:relative;margin:5vh auto 2rem;max-width:560px;background:#fff;border-radius:12px;overflow:hidden;">
-    <button id="kommo-close" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;z-index:1;">&times;</button>
-    <iframe
-      id="kommo-frame"
-      src="about:blank"
-      style="width:100%;height:620px;border:none;display:block;"
-    ></iframe>
-  </div>
-</div>
-
+<!-- Kommo CTA Trigger -->
 <script>
 (function () {
-  var FORM_URL = 'https://forms.kommo.com/forms/1716376/?hash=6e1fa9fc40b1434fe02b0739d75fe14b&locale=pt';
-  var frameReady = false;
+  var kommoBtn = null;
 
-  function openModal() {
-    document.getElementById('kommo-overlay').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    if (!frameReady) {
-      frameReady = true;
-      document.getElementById('kommo-frame').src = FORM_URL;
-    }
-  }
-
-  function closeModal() {
-    document.getElementById('kommo-overlay').style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  document.getElementById('kommo-close').addEventListener('click', closeModal);
-
-  document.getElementById('kommo-overlay').addEventListener('click', function (e) {
-    if (e.target === this) closeModal();
+  // Captura o botão do Kommo assim que ele aparecer no DOM
+  var observer = new MutationObserver(function () {
+    var btn = document.getElementById('amoforms_action_btn');
+    if (btn) { kommoBtn = btn; observer.disconnect(); }
   });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeModal();
-  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.cta-button');
     if (!a) return;
     e.preventDefault();
-    openModal();
+    if (kommoBtn) { kommoBtn.click(); }
   }, true);
 })();
 </script>
