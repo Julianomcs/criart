@@ -480,9 +480,6 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "x7h3zlx0bc");
     </script>
-  <!-- Kommo Form -->
-  <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1716376",hash:"6e1fa9fc40b1434fe02b0739d75fe14b",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
-  <script id="amoforms_script_1716376" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1782484079"></script>
 </head>
 <body>
 
@@ -872,36 +869,57 @@
   }, true);
 })();
 </script>
-<!-- Kommo Form Trigger -->
+<!-- Modal Kommo -->
+<div id="kommo-overlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.65);overflow-y:auto;">
+  <div id="kommo-box" style="position:relative;margin:5vh auto 2rem;max-width:540px;background:#fff;border-radius:12px;padding:2rem 1.5rem 1.5rem;">
+    <button id="kommo-close" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;">&times;</button>
+    <div id="amoforms_1716376"></div>
+  </div>
+</div>
+
 <script>
 (function () {
-  var kommoTrigger = null;
+  var formLoaded = false;
 
-  // Observa o DOM e captura o botão que o Kommo criar, seja qual for a classe
-  var observer = new MutationObserver(function () {
-    if (kommoTrigger) return;
-    // Procura qualquer botão/link dentro de um container com "amoforms" no id ou classe
-    var el = document.querySelector(
-      '[class*="amoforms"] button, [id*="amoforms"] button, ' +
-      '[class*="amoforms"] a[role="button"], [id*="amoforms"] a[role="button"]'
-    );
-    if (!el) return;
-    kommoTrigger = el;
-    // Move o container do Kommo pra fora da tela (mantém clicável via JS)
-    var wrapper = el.closest('[class*="amoforms"], [id*="amoforms"]') || el.parentElement;
-    if (wrapper) {
-      wrapper.style.cssText = 'position:fixed!important;top:-9999px!important;left:-9999px!important;';
-    }
+  function loadKommoScript() {
+    if (formLoaded) return;
+    formLoaded = true;
+    // Inicializa a fila do Kommo apontando para o div #amoforms_1716376
+    window.amo_forms_load = window.amo_forms_load || function(f){ (window.amo_forms_load.f = window.amo_forms_load.f || []).push(f); };
+    window.amo_forms_load({ id: '1716376', hash: '6e1fa9fc40b1434fe02b0739d75fe14b', locale: 'pt' });
+    var s = document.createElement('script');
+    s.async = true;
+    s.charset = 'utf-8';
+    s.src = 'https://forms.kommo.com/forms/assets/js/amoforms.js?1782484079';
+    document.head.appendChild(s);
+  }
+
+  function openModal() {
+    document.getElementById('kommo-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    loadKommoScript();
+  }
+
+  function closeModal() {
+    document.getElementById('kommo-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('kommo-close').addEventListener('click', closeModal);
+
+  document.getElementById('kommo-overlay').addEventListener('click', function (e) {
+    if (e.target === this) closeModal();
   });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeModal();
+  });
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.cta-button');
     if (!a) return;
     e.preventDefault();
-    if (kommoTrigger) {
-      kommoTrigger.click();
-    }
+    openModal();
   }, true);
 })();
 </script>
