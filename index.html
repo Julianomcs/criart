@@ -871,33 +871,28 @@
 </script>
 <!-- Modal Kommo -->
 <div id="kommo-overlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.65);overflow-y:auto;">
-  <div id="kommo-box" style="position:relative;margin:5vh auto 2rem;max-width:540px;background:#fff;border-radius:12px;padding:2rem 1.5rem 1.5rem;">
-    <button id="kommo-close" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;">&times;</button>
-    <div id="amoforms_1716376"></div>
+  <div id="kommo-box" style="position:relative;margin:5vh auto 2rem;max-width:560px;background:#fff;border-radius:12px;overflow:hidden;">
+    <button id="kommo-close" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;z-index:1;">&times;</button>
+    <iframe
+      id="kommo-frame"
+      src="about:blank"
+      style="width:100%;height:620px;border:none;display:block;"
+    ></iframe>
   </div>
 </div>
 
 <script>
 (function () {
-  var formLoaded = false;
-
-  function loadKommoScript() {
-    if (formLoaded) return;
-    formLoaded = true;
-    // Inicializa a fila do Kommo apontando para o div #amoforms_1716376
-    window.amo_forms_load = window.amo_forms_load || function(f){ (window.amo_forms_load.f = window.amo_forms_load.f || []).push(f); };
-    window.amo_forms_load({ id: '1716376', hash: '6e1fa9fc40b1434fe02b0739d75fe14b', locale: 'pt' });
-    var s = document.createElement('script');
-    s.async = true;
-    s.charset = 'utf-8';
-    s.src = 'https://forms.kommo.com/forms/assets/js/amoforms.js?1782484079';
-    document.head.appendChild(s);
-  }
+  var FORM_URL = 'https://forms.kommo.com/forms/1716376/?hash=6e1fa9fc40b1434fe02b0739d75fe14b&locale=pt';
+  var frameReady = false;
 
   function openModal() {
     document.getElementById('kommo-overlay').style.display = 'block';
     document.body.style.overflow = 'hidden';
-    loadKommoScript();
+    if (!frameReady) {
+      frameReady = true;
+      document.getElementById('kommo-frame').src = FORM_URL;
+    }
   }
 
   function closeModal() {
