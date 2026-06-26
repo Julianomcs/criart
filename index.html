@@ -869,10 +869,11 @@
   }, true);
 })();
 </script>
-<!-- Modal Kommo (form inline inserido pelo script dentro do card) -->
+<!-- Modal Kommo -->
 <div id="kommo-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.7);overflow-y:auto;">
   <div style="position:relative;margin:5vh auto 2rem;max-width:560px;background:#fff;border-radius:12px;padding:2rem 1.5rem 1.5rem;min-height:200px;">
     <button id="kommo-close" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.8rem;line-height:1;cursor:pointer;color:#555;">&times;</button>
+    <div id="kommo-loading" style="text-align:center;padding:3rem 1rem;color:#888;font-size:0.95rem;">Carregando formulário...</div>
     <!-- Kommo insere o iframe ANTES deste script tag → fica dentro do modal -->
     <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1716376",hash:"6e1fa9fc40b1434fe02b0739d75fe14b",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
     <script id="amoforms_script_1716376" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1782484079"></script>
@@ -889,6 +890,17 @@
     document.getElementById('kommo-modal').style.display = 'none';
     document.body.style.overflow = '';
   }
+
+  // Esconde o "Carregando..." assim que o iframe do Kommo aparecer no DOM
+  var observer = new MutationObserver(function () {
+    var iframe = document.getElementById('amoforms_iframe_1716376');
+    if (iframe) {
+      var loading = document.getElementById('kommo-loading');
+      if (loading) loading.style.display = 'none';
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.getElementById('kommo-modal'), { childList: true, subtree: true });
 
   document.getElementById('kommo-close').addEventListener('click', closeModal);
   document.getElementById('kommo-modal').addEventListener('click', function (e) {
