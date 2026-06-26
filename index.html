@@ -875,29 +875,33 @@
 <!-- Kommo Form Trigger -->
 <script>
 (function () {
-  function openKommoForm() {
-    // Tenta encontrar o botão gerado pelo script Kommo e clicar nele
-    var btn = document.querySelector(
-      '[class*="amoforms"] button, [class*="amoforms"] a, [id*="amoforms"] button, [id*="amoforms"] a'
+  var kommoTrigger = null;
+
+  // Observa o DOM e captura o botão que o Kommo criar, seja qual for a classe
+  var observer = new MutationObserver(function () {
+    if (kommoTrigger) return;
+    // Procura qualquer botão/link dentro de um container com "amoforms" no id ou classe
+    var el = document.querySelector(
+      '[class*="amoforms"] button, [id*="amoforms"] button, ' +
+      '[class*="amoforms"] a[role="button"], [id*="amoforms"] a[role="button"]'
     );
-    if (btn) { btn.click(); return; }
-    // Fallback: re-dispara o loader do Kommo
-    if (window.amo_forms_load && window.amo_forms_load.f) {
-      var forms = window.amo_forms_load.f;
-      for (var i = 0; i < forms.length; i++) {
-        if (forms[i] && forms[i][0] && forms[i][0].id === '1716376') {
-          forms[i][0].open && forms[i][0].open();
-          break;
-        }
-      }
+    if (!el) return;
+    kommoTrigger = el;
+    // Move o container do Kommo pra fora da tela (mantém clicável via JS)
+    var wrapper = el.closest('[class*="amoforms"], [id*="amoforms"]') || el.parentElement;
+    if (wrapper) {
+      wrapper.style.cssText = 'position:fixed!important;top:-9999px!important;left:-9999px!important;';
     }
-  }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.cta-button');
     if (!a) return;
     e.preventDefault();
-    openKommoForm();
+    if (kommoTrigger) {
+      kommoTrigger.click();
+    }
   }, true);
 })();
 </script>
